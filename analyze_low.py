@@ -21,10 +21,11 @@ N_systems = len(data)
 # instantiate a PyMC3 model class
 with pm.Model() as model:
 
-    log_alpha = pm.Uniform("log_alpha", lower=0.01, upper=2.5)
-    log_beta = pm.Uniform("log_beta", lower=0.01, upper=2.5)
+    mu = pm.Normal("mu", mu=0.0, sd=2.0)
+    tau = pm.HalfNormal("tau", sd=4.0)
+    tau_off = pm.Deterministic("tau_off", tau + 0.5)
 
-    v = pm.Beta("v", alpha=10**log_alpha, beta=10**log_beta, shape=N_systems)
+    v = pm.LogitNormal("v", mu=mu, tau=tau_off, shape=N_systems)
 
     theta = pm.Deterministic("theta", v * 180.)
 
@@ -63,16 +64,27 @@ ax_mut = plt.subplot(gs[0, 0:2])
 ax_mut.set_ylabel(r"$p(\theta|\,\boldsymbol{D})\quad[{}^\circ$]")
 ax_mut.yaxis.set_ticklabels([])
 ax_mut.annotate(r"$\theta$", (0.9,0.8), xycoords="axes fraction")
+#
+# nplot = 20
+# ind = np.random.choice(range(len(trace)), nplot)
+# log_alphas = trace["log_alpha"][ind]
+# log_betas = trace["log_beta"][ind]
+#
+# vs = np.linspace(0, 0.2, num=200)
+# for i in range(nplot):
+#     ys = beta.pdf(vs, 10**log_alphas[i], 10**log_betas[i])/np.pi * deg
+#     ax_mut.plot(vs * 180., ys, lw=0.8, alpha=0.8, color="C0")
 
 nplot = 20
 ind = np.random.choice(range(len(trace)), nplot)
-log_alphas = trace["log_alpha"][ind]
-log_betas = trace["log_beta"][ind]
+mus = trace["mu"][ind]
+taus = trace["tau_off"][ind]
 
-vs = np.linspace(0, 0.2, num=200)
+us = np.linspace(0.001, 30/180., num=500)
+vs = np.log(us/(1 - us))
 for i in range(nplot):
-    ys = beta.pdf(vs, 10**log_alphas[i], 10**log_betas[i])/np.pi * deg
-    ax_mut.plot(vs * 180., ys, lw=0.8, alpha=0.8, color="C0")
+    ys = 1/(us * (1 - us)) * np.sqrt(taus[i]/(2 * np.pi)) * np.exp(-taus[i]/2 * (vs - mus[i])**2)/np.pi * deg
+    ax_mut.plot(us * 180., ys/np.max(ys), lw=0.8, alpha=0.8, color="C0")
 
 # Rejection sampling for the distributions
 def input_prob(theta):
@@ -84,7 +96,8 @@ def input_prob(theta):
 norm = quad(input_prob, 0, 180.)
 print(norm)
 # plot the real distribution
-ax_mut.plot(vs * 180, input_prob(vs * 180)/norm[0], lw=1.5, color="k")
+dist = input_prob(us * 180)/norm[0]
+ax_mut.plot(us * 180, dist/np.max(dist), lw=1.5, color="k")
 
 # the individual mutual inclinations
 ax = [plt.subplot(gs[0, 2]), #1
@@ -112,5 +125,9 @@ for i,a in enumerate(ax):
     a.yaxis.set_ticklabels([])
     a.set_xlim(*xlim)
     a.annotate(r"$\theta_{:}$".format(i), (0.8,0.8), xycoords="axes fraction")
+
+
+ax_mut.set_xlim(*xlim)
+ax_mut.set_ylim(0,1.05)
 
 fig.savefig("low/imut_low.pdf")

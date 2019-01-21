@@ -14,12 +14,14 @@ data = ascii.read("data/iso_sample.ecsv", format="ecsv")
 N_systems = len(data)
 
 # instantiate a PyMC3 model class
+# instantiate a PyMC3 model class
 with pm.Model() as model:
 
-    log_alpha = pm.Uniform("log_alpha", lower=0.03, upper=2.5)
-    log_beta = pm.Uniform("log_beta", lower=0.03, upper=2.5)
+    mu = pm.Normal("mu", mu=0.0, sd=2.0)
+    tau = pm.HalfNormal("tau", sd=4.0)
+    tau_off = pm.Deterministic("tau_off", tau + 0.5)
 
-    v = pm.Beta("v", alpha=10**log_alpha, beta=10**log_beta, shape=N_systems)
+    v = pm.LogitNormal("v", mu=mu, tau=tau_off, shape=N_systems)
 
     theta = pm.Deterministic("theta", v * 180.)
 
