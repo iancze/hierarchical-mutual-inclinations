@@ -18,13 +18,13 @@ deg = np.pi/180.0
 data = ascii.read("data/iso_sample.ecsv", format="ecsv")
 N_systems = len(data)
 
-# instantiate a PyMC3 model class
 with pm.Model() as model:
 
-    log_alpha = pm.Uniform("log_alpha", lower=0.01, upper=2.5)
-    log_beta = pm.Uniform("log_beta", lower=0.01, upper=2.5)
+    mu = pm.Normal("mu", mu=0.0, sd=2.0)
+    tau = pm.HalfNormal("tau", sd=4.0)
+    tau_off = pm.Deterministic("tau_off", tau + 0.5)
 
-    v = pm.Beta("v", alpha=10**log_alpha, beta=10**log_beta, shape=N_systems)
+    v = pm.LogitNormal("v", mu=mu, tau=tau_off, shape=N_systems)
 
     theta = pm.Deterministic("theta", v * 180.)
 
@@ -66,19 +66,20 @@ ax_mut.annotate(r"$\theta$", (0.9,0.8), xycoords="axes fraction")
 
 nplot = 20
 ind = np.random.choice(range(len(trace)), nplot)
-log_alphas = trace["log_alpha"][ind]
-log_betas = trace["log_beta"][ind]
+mus = trace["mu"][ind]
+taus = trace["tau_off"][ind]
 
-vs = np.linspace(0, 1, num=200)
+us = np.linspace(0.001, 0.999, num=500)
+vs = np.log(us/(1 - us))
 for i in range(nplot):
-    ys = beta.pdf(vs, 10**log_alphas[i], 10**log_betas[i])/np.pi * deg
-    ax_mut.plot(vs * 180., ys, lw=0.8, alpha=0.8, color="C0")
-
+    ys = 1/(us * (1 - us)) * np.sqrt(taus[i]/(2 * np.pi)) * np.exp(-taus[i]/2 * (vs - mus[i])**2)/np.pi * deg
+    ax_mut.plot(us * 180., ys/np.max(ys), lw=0.8, alpha=0.8, color="C0")
 
 # norm = quad(input_prob, 0, 180.)
 # print(norm)
 # plot the real distribution
-ax_mut.plot(vs * 180, np.sin(vs * np.pi)/2 * deg, lw=1.5, color="k")
+dist = np.sin(vs * np.pi)/2 * deg
+ax_mut.plot(vs * 180, dist/np.max(dist) , lw=1.5, color="k")
 #
 # res = quad(lambda x: beta.pdf(x/np.pi, 1.2, 10.0)/np.pi, 0, np.pi)
 # print(res)
@@ -116,4 +117,10 @@ for i,a in enumerate(ax):
     a.set_xlim(*xlim)
     a.annotate(r"$\theta_{:}$".format(i), (0.8,0.8), xycoords="axes fraction")
 
+ax_mut.set_xlim(*xlim)
+ax_mut.set_ylim(bottom=0.0, top=1.05)
+
 fig.savefig("iso/imut_iso.pdf")
+
+
+# now make a histogramed p(theta) over all draws

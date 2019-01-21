@@ -16,19 +16,11 @@ N_systems = len(data)
 # instantiate a PyMC3 model class
 with pm.Model() as model:
 
-    mu = pm.Uniform("mu", lower=0.0, upper=1.0)
-    log_precision = pm.Uniform("log_precision", lower=tt.log10(1.0/mu), upper=4.5)
+    mu = pm.Normal("mu", mu=0.0, sd=2.0)
+    tau = pm.HalfNormal("tau", sd=4.0)
+    tau_off = pm.Deterministic("tau_off", tau + 0.5)
 
-    precision = 10**log_precision
-    kappa = mu * (1 - mu) * precision - 1
-    alpha = pm.Deterministic("alpha", mu * kappa)
-    beta = pm.Deterministic("beta", (1 - mu) * kappa)
-    # log_alpha = pm.Uniform("log_alpha", lower=0.01, upper=4.0, testval=0.2)
-    # log_beta = pm.Uniform("log_beta", lower=0.01, upper=4.0, testval=3.0)
-
-
-    # v = pm.Beta("v", alpha=10**log_alpha, beta=10**log_beta, shape=N_systems)
-    v = pm.LogitNormal("v", mu=mu, tau=tau, shape=N_systems)
+    v = pm.LogitNormal("v", mu=mu, tau=tau_off, shape=N_systems)
 
     theta = pm.Deterministic("theta", v * 180.)
 
@@ -52,6 +44,6 @@ with pm.Model() as model:
 
 # sample the model!
 with model:
-    trace = pm.sample(draws=5000, tune=10000, chains=2, nuts_kwargs={"target_accept":0.9})
+    trace = pm.sample(draws=10000, tune=20000, chains=2, nuts_kwargs={"target_accept":0.95})
 
-pm.backends.ndarray.save_trace(trace, directory="real-precision", overwrite=True)
+pm.backends.ndarray.save_trace(trace, directory="real_logit", overwrite=True)
