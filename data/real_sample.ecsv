@@ -1,0 +1,14 @@
+# %ECSV 0.9
+# ---
+# datatype:
+# - {name: name, datatype: string}
+# - {name: cos_i_disk, datatype: float64}
+# - {name: cos_i_disk_err, datatype: float64}
+# - {name: cos_i_star, datatype: float64}
+# - {name: cos_i_star_err, datatype: float64}
+# schema: astropy-2.0
+name cos_i_disk cos_i_disk_err cos_i_star cos_i_star_err
+V4046Sgr 0.8338858220671682 0.013486364720117796 0.834655658377803 0.005575416449502471
+AKSco -0.3321611318837033 0.00823117048029895 -0.3216047308919797 0.03966256592088986
+"DQ Tau" -0.9396926207859083 0.01790813282752749 -0.9287448642521512 0.017922666097446444
+"UZ Tau E" 0.5570205743376967 0.02174240495041162 0.5210096318405762 0.07448635872738554
