@@ -59,7 +59,7 @@ fig = plt.figure(figsize=(3.25,6))
 gs = gridspec.GridSpec(nrows=4, ncols=2, figure=fig, left=0.11, right=0.89, top=0.98, bottom=0.11, hspace=0.3, wspace=0.15) #left, right, etc..
 
 # the mutual inc dis
-ax_mut = plt.subplot(gs[1, :])
+ax_mut = plt.subplot(gs[0, :])
 ax_mut.set_ylabel(r"$p(\theta|\,\boldsymbol{D})\quad[{}^\circ$]")
 ax_mut.yaxis.set_ticklabels([])
 ax_mut.annotate(r"$\theta$", (0.9,0.8), xycoords="axes fraction")
@@ -78,7 +78,7 @@ for i in range(nplot):
     # ax_mut.plot(us * 180., ys/np.max(ys), lw=0.8, alpha=0.8, color="C0")
     ax_mut.plot(us * 180., ys/np.max(ys), lw=0.8, alpha=0.8, color="C0")
 
-ax_mut_bin = plt.subplot(gs[0, :])
+ax_mut_bin = plt.subplot(gs[1, :])
 
 # the individual mutual inclinations
 ax = [
@@ -139,6 +139,16 @@ bounds = np.percentile(ypoints, [50 - 34.1, 50+34.1], axis=0) # compute the boun
 # stdev = np.std(ypoints, axis=0)
 # print(len(stdev))
 # print()
+
+# do this for the actual distribution
+dx = points[1] - points[0]
+tot_prob = np.cumsum(final * dx)
+print(tot_prob[-1])
+ind = np.searchsorted(tot_prob/tot_prob[-1], 0.683)
+print("68 percentile all", points[1:][ind])
+
+
+
 ax_mut_bin.fill_between(points, bounds[0], bounds[1], alpha=0.2, color="C0", edgecolor=None, linewidth=0.0)
 ax_mut_bin.plot(points, final, color="C0")
 # ax_mut_bin.plot(points, bounds[0], color="C1")
