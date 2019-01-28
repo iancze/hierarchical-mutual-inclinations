@@ -60,7 +60,7 @@ gs_low = gridspec.GridSpec(nrows=3, ncols=4, figure=fig, left=0.065, right=0.935
 
 ax_line = fig.add_axes([0.0, 0.485, 1, 0.05]) # create an axes over the full figure.
 ax_line.axis("off")
-ax_line.plot([0.035, 0.965], [0.0, 0.0], color="k")
+ax_line.plot([0.03, 0.97], [0.0, 0.0], color="k")
 ax_line.set_xlim(0, 1)
 ax_line.set_ylim(-1, 1)
 
@@ -217,7 +217,12 @@ for i,a in enumerate(ax):
 ax_mut.set_xlim(*xlim)
 ax_mut.set_ylim(0,1.05)
 
-plt.figtext(0.96, 0.27, r"low $\theta$ sample", rotation="vertical", va="center", ha="center")
-plt.figtext(0.96, 0.83, r"isotropic sample", rotation="vertical", ha="center")
+# necessary position to plot on the side
+# plt.figtext(0.96, 0.27, r"low $\theta$ sample", rotation="vertical", va="center", ha="center")
+# plt.figtext(0.96, 0.83, r"isotropic sample", rotation="vertical", ha="center")
+
+plt.figtext(0.97, 0.492, r"low $\theta$ sample", va="center", ha="right")
+plt.figtext(0.97, 0.52, r"isotropic sample", ha="right")
+
 
 fig.savefig("imut_fake.pdf")
