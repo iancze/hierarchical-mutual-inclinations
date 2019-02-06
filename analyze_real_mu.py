@@ -160,3 +160,4 @@ ax_mut_bin.set_xlim(0, 30)
 ax_mut_bin.set_ylim(bottom=0.0)
 
 fig.savefig("real_logit/imut_real.pdf")
+fig.savefig("real_logit/imut_real.png")

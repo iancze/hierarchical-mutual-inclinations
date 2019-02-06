@@ -226,3 +226,4 @@ plt.figtext(0.97, 0.52, r"isotropic sample", ha="right")
 
 
 fig.savefig("imut_fake.pdf")
+fig.savefig("imut_fake.png")
