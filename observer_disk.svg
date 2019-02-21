@@ -15,7 +15,10 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.2 2405546, 2018-03-11"
-   sodipodi:docname="observer_disk.svg">
+   sodipodi:docname="observer_disk.svg"
+   inkscape:export-filename="/home/ian/Research/Disks/Circumbinary/data/hierarchical-mutual-inclinations/observer_disk.png"
+   inkscape:export-xdpi="400"
+   inkscape:export-ydpi="400">
   <defs
      id="defs2">
     <marker
@@ -240,15 +243,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="11.313708"
-     inkscape:cx="139.27924"
-     inkscape:cy="198.86028"
+     inkscape:zoom="3.9999998"
+     inkscape:cx="108.95305"
+     inkscape:cy="165.59112"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
      units="in"
      inkscape:window-width="1920"
-     inkscape:window-height="1013"
+     inkscape:window-height="995"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1">
@@ -335,13 +338,13 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:3.52777767px;line-height:9.82308769px;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.3929235px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="24.86902"
-       y="243.19443"
+       x="22.289333"
+       y="234.52933"
        id="text6917"><tspan
          sodipodi:role="line"
          id="tspan6915"
-         x="24.86902"
-         y="243.19443"
+         x="22.289333"
+         y="234.52933"
          style="fill:#d40000;stroke-width:0.3929235px">i<tspan
    style="font-size:2.72426963px;baseline-shift:sub;fill:#d40000;stroke-width:0.3929235px"
    id="tspan6919">★</tspan></tspan></text>
@@ -377,7 +380,7 @@
          id="tspan8984-6"
          x="33.711494"
          y="232.77525"
-         style="fill:#666666;stroke-width:0.34201494px">Z (Observer)</tspan></text>
+         style="fill:#666666;stroke-width:0.34201494px">Z (observer)</tspan></text>
     <path
        style="fill:#000080;fill-rule:evenodd;stroke:#000080;stroke-width:0.14850652;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.14850653, 0.14850653;stroke-dashoffset:0;stroke-opacity:1"
        d="m 48.845837,247.27344 0.01041,23.94108"
