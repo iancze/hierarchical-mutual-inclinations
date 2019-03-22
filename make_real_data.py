@@ -9,7 +9,7 @@ deg = np.pi/180.0
 rows = [("V4046 Sgr", 33.5, 1.4, 33.42, 0.58),
 ("AK Sco", 109.4, 0.5, 108.76, 2.4),
 ("DQ Tau", 160.0, 3.0, 158.24, 2.77),
-("UZ Tau E", 56.15, 1.5, 58.6, 5.0)]
+("UZ Tau E", 56.15, 1.5, 56.3, 6.1)]
 
 sample = Table(rows=rows, names=["name", "i_disk", "i_disk_err", "i_star", "i_star_err"])
 
@@ -24,4 +24,4 @@ cos_sample = Table([sample["name"], cos_i_disk, cos_i_disk_err, cos_i_star, cos_
 
 print(cos_sample)
 
-ascii.write(cos_sample, "data/real_sample.ecsv", format="ecsv")
+ascii.write(cos_sample, "data/real_sample.ecsv", format="ecsv", overwrite=True)
