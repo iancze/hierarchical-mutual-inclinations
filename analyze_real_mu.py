@@ -147,6 +147,11 @@ print(tot_prob[-1])
 ind = np.searchsorted(tot_prob/tot_prob[-1], 0.683)
 print("68 percentile all", points[1:][ind])
 
+ind = np.searchsorted(tot_prob/tot_prob[-1], 0.954)
+print("95.4 percentile all", points[1:][ind])
+
+ind = np.searchsorted(tot_prob/tot_prob[-1], 0.973)
+print("97.3 percentile all", points[1:][ind])
 
 
 ax_mut_bin.fill_between(points, bounds[0], bounds[1], alpha=0.2, color="C0", edgecolor=None, linewidth=0.0)
